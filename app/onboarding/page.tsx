@@ -4,8 +4,8 @@ import { useState } from "react";
 import type { User } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { doc, setDoc } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { db, storage, useUser } from "@/lib/firebase";
+import { db, useUser } from "@/lib/firebase";
+import { uploadImage } from "@/lib/upload";
 import { SKILLS } from "@/lib/skills";
 import { BRANDS, CITIES, ROLES, normalizeWhatsapp, type Role, type UserProfile } from "@/lib/types";
 
@@ -48,11 +48,7 @@ function OnboardingForm({ authUser, profile }: { authUser: User; profile: UserPr
     setError("");
     try {
       const urls = await Promise.all(
-        picked.map(async (file) => {
-          const r = ref(storage, `portfolio/${authUser.uid}/${Date.now()}-${file.name}`);
-          await uploadBytes(r, file);
-          return getDownloadURL(r);
-        }),
+        picked.map((file) => uploadImage(file, "portfolio", authUser.uid)),
       );
       setPortfolio((p) => [...p, ...urls]);
     } catch (e) {

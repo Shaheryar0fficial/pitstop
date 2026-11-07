@@ -25,16 +25,17 @@ NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=401753971738
 NEXT_PUBLIC_FIREBASE_APP_ID=1:401753971738:web:9e968d52df6409f33045a3
 ```
 
-## 2. Secrets — NOT in GitHub, share privately (WhatsApp)
+## 2. Secrets — NOT in GitHub
 
 These two are real secrets. Anyone who has them can read/write the whole database or spend our Claude credits. Never commit them, even to this private repo.
 
-- `FIREBASE_SERVICE_ACCOUNT` — Firebase console → Project settings → **Service accounts** → **Generate new private key**. Paste the whole JSON on **one line**. Shaheryar generates it and sends it privately.
-- `ANTHROPIC_API_KEY` — from console.anthropic.com → API keys. Sent privately.
+- `FIREBASE_SERVICE_ACCOUNT` — Firebase console → Project settings → **Service accounts** → **Generate new private key**. Paste the whole JSON on **one line**. Shaheryar generates it and sends it privately (WhatsApp).
+- `ANTHROPIC_API_KEY` — **not shared with anyone.** It is set only in **Vercel → Project → Settings → Environment Variables** by whoever deploys. Locally, leave it empty: the app works, only the AI Assistant and the "Someone already asked this" check show an error. Test those two on the deployed site.
 
 ## 3. To-dos before the demo
 
-- [ ] Fill in the two secrets above in your own `.env.local`.
+- [ ] Put `FIREBASE_SERVICE_ACCOUNT` in your own `.env.local`.
+- [ ] On Vercel, add all the variables above, including `ANTHROPIC_API_KEY` (the only place it lives).
 - [ ] Run the seed once: `npm run seed` (Part B's `scripts/seed.ts`).
 - [ ] Create Firestore indexes: open each screen once and click the "index required" link, or run `firebase deploy --only firestore:indexes` (uses `firestore.indexes.json`).
 - [ ] Add the Vercel domain in Authentication → Settings → **Authorized domains** after the first deploy, or Google sign-in fails on the live site.

@@ -1,0 +1,69 @@
+rules_version = '2';
+// Part B owns this file. Copied as written from the Security Rules section of
+// PitStop-Part-B-Stores-Community.md. Deploy: firebase deploy --only firestore:rules
+service cloud.firestore {
+  match /databases/{db}/documents {
+    function signedIn() { return request.auth != null; }
+    function onlyChanged(keys) {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(keys);
+    }
+
+    match /users/{uid} {
+      allow read: if true;
+      allow write: if signedIn() && request.auth.uid == uid;
+      match /reviews/{id} {
+        allow read: if true;
+        allow create: if signedIn() && request.resource.data.riderId == request.auth.uid;
+      }
+    }
+
+    match /posts/{postId} {
+      allow read: if true;
+      allow create: if signedIn()
+        && request.resource.data.authorId == request.auth.uid
+        && request.resource.data.status == 'open';
+      allow update: if signedIn() && (
+        (resource.data.authorId == request.auth.uid && onlyChanged(['status', 'approvedOfferId']))
+        || onlyChanged(['upvotes', 'replyCount'])
+      );
+      match /replies/{id} {
+        allow read: if true;
+        allow create: if signedIn() && request.resource.data.authorId == request.auth.uid;
+        allow update: if signedIn() && onlyChanged(['upvotes']);
+      }
+    }
+
+    match /offers/{offerId} {
+      allow read: if signedIn();
+      allow create: if signedIn()
+        && request.resource.data.providerId == request.auth.uid
+        && request.resource.data.status == 'pending'
+        && get(/databases/$(db)/documents/posts/$(request.resource.data.postId)).data.authorId
+           == request.resource.data.postAuthorId;
+      allow update: if signedIn()
+        && resource.data.postAuthorId == request.auth.uid
+        && onlyChanged(['status', 'approvedAt'])
+        && request.resource.data.status in ['approved', 'declined']
+        && (request.resource.data.status != 'approved' || request.resource.data.approvedAt == request.time);
+    }
+
+    match /stores/{ownerId} {
+      allow read: if true;
+      allow create, update: if signedIn() && request.auth.uid == ownerId;
+    }
+
+    match /products/{id} {
+      allow read: if true;
+      allow create: if signedIn()
+        && request.resource.data.storeId == request.auth.uid
+        && exists(/databases/$(db)/documents/stores/$(request.auth.uid));
+      allow update: if signedIn() && resource.data.storeId == request.auth.uid;
+      allow delete: if false;   // mark as "sold" so billing counts stay honest
+    }
+
+    match /config/{doc} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}

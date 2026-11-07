@@ -1,0 +1,30 @@
+rules_version = '2';
+// Firebase Storage rules. Anyone can view photos; you can only upload
+// into your own folder, images only, under 5 MB.
+service firebase.storage {
+  match /b/{bucket}/o {
+    function ownImage(uid) {
+      return request.auth != null
+        && request.auth.uid == uid
+        && request.resource.size < 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+
+    match /portfolio/{uid}/{file} {   // Part A: provider portfolio
+      allow read: if true;
+      allow write: if ownImage(uid);
+    }
+    match /posts/{uid}/{file} {       // Part A: photos on a need
+      allow read: if true;
+      allow write: if ownImage(uid);
+    }
+    match /products/{uid}/{file} {    // Part B: product photos
+      allow read: if true;
+      allow write: if ownImage(uid);
+    }
+    match /stores/{uid}/{file} {      // Part B: store logo
+      allow read: if true;
+      allow write: if ownImage(uid);
+    }
+  }
+}

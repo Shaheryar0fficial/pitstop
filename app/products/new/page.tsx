@@ -56,7 +56,9 @@ function ProductForm({ uid, store }: { uid: string; store: Store }) {
     !partType && "a part type",
     bikeKeys.length === 0 && "at least one compatible bike",
     !(priceNumber > 0) && "a price",
-    photos.length === 0 && "at least one photo",
+    // Photos are optional for now: the shared Firebase project is on the free
+    // Spark plan, where Storage uploads are refused. Products without photos
+    // show a part-type tile instead. Make this required again after Blaze.
   ].filter(Boolean) as string[];
 
   const toggleBike = (key: string) =>
@@ -173,7 +175,10 @@ function ProductForm({ uid, store }: { uid: string; store: Store }) {
           </div>
         </Field>
 
-        <Field label={`Photos (at least 1, up to ${MAX_PHOTOS})`}>
+        <Field
+          label={`Photos (optional, up to ${MAX_PHOTOS})`}
+          hint="Photo uploads need Firebase Storage (Blaze plan). Without a photo, the product shows its part type."
+        >
           <div className="flex flex-wrap items-center gap-3">
             {photos.map((url) => (
               <img key={url} src={url} alt="Product" className="h-20 w-20 rounded-md object-cover" />

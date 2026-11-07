@@ -1,5 +1,6 @@
 // Part B owns this file (Shared Contract).
 // Part types for part requests and products. The key is stored as `partType`.
+// (Part A created an identical first version so posting could be built.)
 
 export const PART_TYPES: { key: string; label: string }[] = [
   { key: "headlight", label: "Headlight" },

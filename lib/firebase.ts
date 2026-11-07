@@ -26,8 +26,15 @@ const firebaseConfig = {
 
 export const firebaseConfigured = Boolean(firebaseConfig.apiKey && firebaseConfig.projectId);
 
-// Reuse the app across hot reloads.
-const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+// Reuse the app across hot reloads. Placeholders keep the build and the
+// "not configured" notice working before .env.local exists.
+const app = getApps().length
+  ? getApp()
+  : initializeApp(
+      firebaseConfigured
+        ? firebaseConfig
+        : { ...firebaseConfig, apiKey: "not-configured", projectId: "not-configured" },
+    );
 
 export const auth = getAuth(app);
 export const db = getFirestore(app);

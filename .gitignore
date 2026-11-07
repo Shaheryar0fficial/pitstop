@@ -40,3 +40,12 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 !.env.local.example
+
+# secrets: Firebase/Google service account keys must never be committed
+*-firebase-adminsdk-*.json
+*service-account*.json
+*serviceAccount*.json
+
+# Firebase CLI local files
+.firebase/
+firebase-debug.log

@@ -62,7 +62,7 @@ Prices live in `config/pricing`. Riders are free. Payment is collected offline (
 ### File Ownership (prevents merge conflicts)
 | Owner | Files |
 |---|---|
-| **A** | `lib/firebase.ts`, `lib/firebase-admin.ts`, `lib/claude.ts`, `app/layout.tsx` (nav), `app/onboarding/*`, `app/post/new/*`, `app/posts/[id]/*`, `app/inbox/*`, `app/providers/[id]/*`, `app/billing/*`, `app/assistant/*`, `app/api/assistant/*`, `components/provider/*`, `lib/billing-provider.ts` |
+| **A** | `lib/firebase.ts`, `lib/firebase-admin.ts`, `lib/types.ts` (shared types + city list), `lib/claude.ts`, `storage.rules`, `components/shell/*` (nav, auth gate, placeholders), `app/layout.tsx` (nav), `app/onboarding/*`, `app/post/new/*`, `app/posts/[id]/*`, `app/inbox/*`, `app/providers/[id]/*`, `app/billing/*`, `app/assistant/*`, `app/api/assistant/*`, `components/provider/*`, `lib/billing-provider.ts` |
 | **B** | `lib/bikes.ts`, `lib/skills.ts`, `lib/partTypes.ts`, `firestore.rules`, `scripts/seed.ts`, `app/page.tsx` (feed), `app/stores/*`, `app/products/*`, `app/parts/*`, `app/api/similar/*`, `components/store/*`, `components/community/*`, `lib/billing-store.ts` |
 
 Rule: edit only your own files. If you need a change in the other person's file, ask them.

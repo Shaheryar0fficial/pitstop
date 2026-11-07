@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import type { User } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { doc, setDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -11,44 +12,36 @@ import { BRANDS, CITIES, ROLES, normalizeWhatsapp, type Role, type UserProfile }
 const MAX_PORTFOLIO = 4;
 
 export default function OnboardingPage() {
-  const router = useRouter();
   const { loading, authUser, profile } = useUser();
-
-  const [name, setName] = useState("");
-  const [role, setRole] = useState<Role | null>(null);
-  const [city, setCity] = useState("");
-  const [whatsapp, setWhatsapp] = useState("");
-  const [skills, setSkills] = useState<string[]>([]);
-  const [brands, setBrands] = useState<string[]>([]);
-  const [portfolio, setPortfolio] = useState<string[]>([]);
-  const [uploading, setUploading] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState("");
-
-  // Prefill from Google, or from an existing profile when editing.
-  useEffect(() => {
-    if (!authUser) return;
-    setName(profile?.name ?? authUser.displayName ?? "");
-    if (profile) {
-      setRole(profile.role);
-      setCity(profile.city);
-      setWhatsapp(profile.whatsapp);
-      setSkills(profile.skills ?? []);
-      setBrands(profile.brands ?? []);
-      setPortfolio(profile.portfolio ?? []);
-    }
-  }, [authUser, profile]);
 
   if (loading) return null;
   if (!authUser) {
     return <p className="py-10 text-foreground/70">Sign in with Google to set up your profile.</p>;
   }
+  // Keyed so the form starts fresh from whatever profile exists when it mounts.
+  return <OnboardingForm key={authUser.uid} authUser={authUser} profile={profile} />;
+}
+
+function OnboardingForm({ authUser, profile }: { authUser: User; profile: UserProfile | null }) {
+  const router = useRouter();
+
+  // Prefill from an existing profile when editing, otherwise from Google.
+  const [name, setName] = useState(profile?.name ?? authUser.displayName ?? "");
+  const [role, setRole] = useState<Role | null>(profile?.role ?? null);
+  const [city, setCity] = useState(profile?.city ?? "");
+  const [whatsapp, setWhatsapp] = useState(profile?.whatsapp ?? "");
+  const [skills, setSkills] = useState<string[]>(profile?.skills ?? []);
+  const [brands, setBrands] = useState<string[]>(profile?.brands ?? []);
+  const [portfolio, setPortfolio] = useState<string[]>(profile?.portfolio ?? []);
+  const [uploading, setUploading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
 
   const toggle = (list: string[], set: (v: string[]) => void, value: string) =>
     set(list.includes(value) ? list.filter((v) => v !== value) : [...list, value]);
 
   async function addPhotos(files: FileList | null) {
-    if (!files || !authUser) return;
+    if (!files) return;
     const room = MAX_PORTFOLIO - portfolio.length;
     const picked = Array.from(files).slice(0, room);
     setUploading(true);
@@ -80,7 +73,7 @@ export default function OnboardingPage() {
   ].filter(Boolean) as string[];
 
   async function save() {
-    if (!authUser || !role || problems.length) return;
+    if (!role || problems.length) return;
     setSaving(true);
     setError("");
     const data: Omit<UserProfile, "uid"> = {

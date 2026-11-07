@@ -1,0 +1,170 @@
+# PitStop — MVP Feature Document
+### Community Platform for Pakistani Heavy Bike Owners
+
+---
+
+## Problem Statement
+
+Pakistani heavy bike owners have no trusted space to find skilled mechanics, buy genuine parts, or get real advice — they're stuck between overpriced shops and chaotic Facebook groups.
+
+---
+
+## The Core Idea
+
+A user posts a **need** — service, part, or question.
+The platform **intelligently routes** that need to the right people.
+The right people **respond, connect, and transact**.
+
+> You need detailing → only detailers see it.
+> You need headlights → all parts sellers get notified.
+> You have a weird engine noise → community diagnoses it.
+
+---
+
+## User Types
+
+| Type | Who They Are |
+|---|---|
+| **Rider** | Heavy bike owner posting needs, buying parts, asking questions |
+| **Service Provider** | Mechanic, detailer, tuner, modifier — lists their skill |
+| **Parts Seller** | Individual or shop selling genuine/used parts |
+
+---
+
+## Feature 1 — Smart Need Posting (Core Loop)
+
+Rider posts a need in natural language.
+
+**AI Layer:** Classifies the post into one of three categories:
+- `SERVICE_REQUEST` → routes to relevant service providers only
+- `PARTS_REQUEST` → notifies all parts sellers
+- `COMMUNITY_QUESTION` → goes to public feed for crowd advice
+
+**Post fields:**
+- Bike model + year
+- Need description (free text)
+- Photos (optional)
+- Location (city-level)
+
+**How routing works:**
+- Service providers tag their skills on signup (detailing, tuning, engine work, electrical, modification, tyres etc.)
+- A detailing request only pings detailers. A tuning request only pings tuners.
+- Parts requests broadcast to everyone selling parts.
+
+---
+
+## Feature 2 — Service Provider Profiles
+
+Mechanics and service providers get a public profile:
+
+- Name, city, skills tags
+- Bike brands/models they work on
+- Portfolio photos
+- Ratings + reviews from past riders
+- Contact / booking button
+
+**AI Layer:** When a service request comes in, AI ranks nearby providers by skill match + rating before showing results.
+
+---
+
+## Feature 3 — Parts Marketplace
+
+Peer-to-peer parts listing:
+
+- Part name, bike compatibility, condition (new/used), price
+- Seller profile + trust score
+- Photos required
+- WhatsApp/in-app contact
+
+**AI Layer:** When a rider posts a parts need, AI matches it against active listings and surfaces exact or compatible matches first.
+
+---
+
+## Feature 4 — Community Feed
+
+Open feed for questions, ride posts, and advice:
+
+- Anyone can post
+- Replies from verified riders and providers
+- Upvote system — best answer rises
+- Tagged by bike model so owners of same bike find relevant threads
+
+**AI Layer:** AI suggests relevant past threads before you post ("Someone already asked this — here's what riders said")
+
+---
+
+## Feature 5 — AI Bike Assistant (The Differentiator)
+
+Embedded chatbot trained on common heavy bike issues.
+
+- Describe your problem → AI gives probable causes + what type of mechanic you need
+- Helps rider understand if it's a DIY fix or needs a pro
+- Prevents riders from getting ripped off by knowing what the job should cost roughly
+
+**Example:**
+> "My CBR 150 is vibrating at high speed"
+> AI: "Likely wheel balancing issue or loose front axle nut. This is a 30-min job. Book a general mechanic, should cost Rs. 500-800."
+
+---
+
+## MVP Scope (Hackathon Build)
+
+**Build only this. Nothing else.**
+
+| Feature | In MVP? |
+|---|---|
+| Smart need posting with AI classification | ✅ |
+| Service provider profiles + skill tags | ✅ |
+| Parts listings (post + browse) | ✅ |
+| Community feed with replies | ✅ |
+| AI Bike Assistant (chatbot) | ✅ |
+| In-app payments | ❌ |
+| Real-time chat | ❌ |
+| Map view | ❌ |
+| Push notifications | ❌ |
+
+---
+
+## Tech Stack (Simple, MVP-ready)
+
+| Layer | Choice | Why |
+|---|---|---|
+| Frontend | Next.js | Fast, SEO-friendly, one codebase |
+| Backend | Node.js + Express | Simple REST APIs |
+| Database | MongoDB | Flexible schema for posts/profiles |
+| AI Classification | Claude API | Classify posts, rank matches, chatbot |
+| Auth | Clerk or NextAuth | Fast to plug in |
+| File Uploads | Cloudinary | Free tier, easy image handling |
+| Deployment | Vercel + Railway | Free, fast |
+
+---
+
+## AI Integration Summary
+
+| Where | What AI Does |
+|---|---|
+| Post creation | Classifies need → routes to right providers |
+| Parts search | Matches need to existing listings |
+| Provider ranking | Sorts by skill match + proximity + rating |
+| Duplicate check | Surfaces similar past community posts |
+| Bike Assistant | Diagnoses problems, estimates job type + cost |
+
+---
+
+## Hackathon Pitch (One Line)
+
+> *"I built PitStop — a smart community platform for Pakistani heavy bike owners to get the right mechanic, find genuine parts, and get real advice, without the chaos of Facebook groups or the ripoff of random workshops."*
+
+---
+
+## Why This Wins
+
+- **Real problem** — every heavy bike owner in Pakistan has lived this pain
+- **Clear user types** — easy to demo all three flows in 3 minutes
+- **AI is functional, not decorative** — it does real routing, not just a chatbot slapped on top
+- **No real competitor** — PakWheels ignores this niche, Facebook groups are broken
+- **Pakistan-first** — built for how people here actually communicate and transact
+
+---
+
+*Built for Pakistani riders. By someone who gets it.*

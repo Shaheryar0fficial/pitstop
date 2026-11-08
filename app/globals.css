@@ -3,6 +3,9 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  /* Tells the browser which theme to use for native controls (dropdown
+     lists, scrollbars, date pickers), so they match the page. */
+  color-scheme: light;
 }
 
 @theme inline {
@@ -16,7 +19,16 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    color-scheme: dark;
   }
+}
+
+/* Dropdown lists: always readable text on the page's background, in every
+   select across the app (light and dark mode). */
+select option,
+select optgroup {
+  background-color: var(--background);
+  color: var(--foreground);
 }
 
 body {

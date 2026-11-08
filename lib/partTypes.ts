@@ -21,3 +21,9 @@ export const PART_TYPES: { key: string; label: string }[] = [
 export function partTypeLabel(key: string | null | undefined): string {
   return PART_TYPES.find((p) => p.key === key)?.label ?? key ?? "";
 }
+
+/** Stock photo for a part type (public/parts/, see CREDITS.md there). */
+export function partTypeImage(key: string | null | undefined): string {
+  const known = PART_TYPES.some((p) => p.key === key);
+  return `/parts/${known ? key : "other"}.jpg`;
+}

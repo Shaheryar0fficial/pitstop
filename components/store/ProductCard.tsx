@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { bikeLabel } from "@/lib/bikes";
-import { partTypeImage, partTypeLabel } from "@/lib/partTypes";
+import { partTypeLabel } from "@/lib/partTypes";
 import { conditionLabel, type Product } from "@/lib/store-types";
 import { formatRs, whatsappLink } from "./format";
 import { ConditionBadge, btnSecondary, btnWhatsapp } from "./ui";
@@ -32,17 +32,8 @@ export default function ProductCard({
       {photo ? (
         <img src={photo} alt={product.name} className="aspect-[4/3] w-full object-cover" />
       ) : (
-        // No photo of its own yet: show a stock photo of the part type, labelled as such.
-        <div className="relative aspect-[4/3] w-full bg-black/5 dark:bg-white/5">
-          <img
-            src={partTypeImage(product.partType)}
-            alt={`${part} (stock photo)`}
-            loading="lazy"
-            className="h-full w-full object-cover"
-          />
-          <span className="absolute bottom-2 left-2 rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-medium text-white">
-            Stock photo · {part}
-          </span>
+        <div className="flex aspect-[4/3] w-full items-center justify-center bg-gradient-to-br from-orange-600/15 to-black/5 text-sm font-medium text-foreground/60 dark:to-white/5">
+          {part}
         </div>
       )}
       <div className="flex flex-1 flex-col gap-2 p-3">

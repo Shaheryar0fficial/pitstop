@@ -30,9 +30,9 @@ export default function ProductCard({
   return (
     <div className={`flex flex-col overflow-hidden rounded-lg border border-black/10 dark:border-white/10 ${sold ? "opacity-60" : ""}`}>
       {photo ? (
-        <img src={photo} alt={product.name} className="aspect-[4/3] w-full object-cover" />
+        <img src={photo} alt={product.name} className="aspect-video w-full object-cover sm:aspect-[4/3]" />
       ) : (
-        <div className="flex aspect-[4/3] w-full items-center justify-center bg-gradient-to-br from-orange-600/15 to-black/5 text-sm font-medium text-foreground/60 dark:to-white/5">
+        <div className="flex aspect-video w-full items-center sm:aspect-[4/3] justify-center bg-gradient-to-br from-orange-600/15 to-black/5 text-sm font-medium text-foreground/60 dark:to-white/5">
           {part}
         </div>
       )}

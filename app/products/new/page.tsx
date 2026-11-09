@@ -121,7 +121,7 @@ function ProductForm({ uid, store }: { uid: string; store: Store }) {
           <input className={inputCls} value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Ninja 400 LED Headlight Assembly" />
         </Field>
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <Field label="Part type">
             <select className={inputCls} value={partType} onChange={(e) => setPartType(e.target.value)}>
               <option value="">Pick a part type</option>

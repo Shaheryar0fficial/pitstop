@@ -35,4 +35,15 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  overflow-wrap: anywhere; /* long words/links never push the page sideways */
+}
+
+/* Phones: 16px text in form fields stops iOS Safari from zooming in when a
+   field is tapped. (Unlayered, so it wins over Tailwind's text-sm.) */
+@media (max-width: 639px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
 }

@@ -103,7 +103,7 @@ function StoreForm({ uid, profile, store }: { uid: string; profile: UserProfile;
         <Field label="Store name">
           <input className={inputCls} value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Hamza Superbike Parts" />
         </Field>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <Field label="City">
             <select className={inputCls} value={city} onChange={(e) => setCity(e.target.value)}>
               <option value="">Pick a city</option>
